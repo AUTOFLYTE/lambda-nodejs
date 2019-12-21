@@ -40,6 +40,31 @@ exports.handler = signalFxLambda.asyncWrapper(async (event, context) => {
 });
 ```
 
+### Using middyjs
+
+[Middy](https://middy.js.org/) is a simple middleware engine.  See https://middy.js.org/ for more information
+about the project.
+
+If your project already uses middy, you can use the middleware approach instead of the wrapper.
+
+```javascript 1.6
+const signalFxLambda = require('./signalfx-lambda');
+const middy = require('middy');
+
+exports.handler = middy((event, context, callback) => {
+    // This is your function...
+}).use(signalFxLambda.middleware());
+```
+
+This allows middy to wrap your business logic (and other middleware layers, if you have them) with SignalFX metrics.
+
+**NOTE** SignalFx lambda library does not include a dependency to middy, your project will will need to depend on it 
+directly.
+
+```shell script
+npm i --save middy
+```
+
 #### Configuring the ingest endpoint
 
 By default, this function wrapper will send to the `us0` realm. If you are
